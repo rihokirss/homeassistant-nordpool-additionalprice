@@ -1,0 +1,43 @@
+{% set now_ts = as_timestamp(now()) %}
+{% set sunset_ts = as_timestamp(state_attr("sun.sun", "next_setting")) %}
+{% set sunrise_ts = as_timestamp(state_attr("sun.sun", "next_rising")) %}
+{% set next_day_ts = as_timestamp(states("sensor.date")) + 86400 %}
+{% set current_month = now().month %}
+ 
+{% if next_day_ts < sunset_ts %}
+  {% set sunset_ts = sunset_ts - 86400 %}
+{% endif %}
+ 
+{% if next_day_ts < sunrise_ts %} 
+  {% set sunrise_ts = sunrise_ts - 86400 %}
+{% endif %}
+ 
+{% set sunrise_offset = 10800 %}
+{% set sunset_offset = 3600 %}
+{% set network_fees = {"day": 44.3, "night": 25.2} %}
+{% set margins = {"sale": 2.44, "purchase": 4.50} %}
+{% set vat = 0.22 %}
+{% set is_weekend = now().weekday() >= 5 %}
+{% set is_daytime = now().hour >= 7 and now().hour < 22 %}
+{% set is_sunup_effective = current_month >= 4 and current_month <= 10 and now_ts > (sunrise_ts + sunrise_offset) and now_ts < (sunset_ts - sunset_offset) %}
+{% set fee = network_fees.night %}
+ 
+{% if is_weekend or not is_daytime %}
+  {% set fee = network_fees.night %}
+{% else %}
+  {% set fee = network_fees.day %}
+{% endif %}
+ 
+{% set marginal = margins.sale %}
+ 
+{% if is_sunup_effective %}
+  {% set marginal = margins.purchase %}
+{% endif %}
+ 
+{% set fee_with_vat = fee * (1 + vat) %}
+{% set marginal_with_vat = marginal * (1 + vat) %}
+{% set vat_amount = current_price * vat %}
+{% set additional_costs = fee_with_vat + marginal_with_vat %}
+{% set total_cost = vat_amount + additional_costs %}
+ 
+{{ total_cost }}
