@@ -58,7 +58,7 @@
 {% set fee_with_vat = fee * (1 + vat) %}
 {% set marginal_with_vat = marginal * (1 + vat) %}
 
-# Arvutab käibemaksu osa algsest hinnast ja lisab täiendavad kulud
+{# Arvutab käibemaksu osa algsest hinnast ja lisab täiendavad kulud #}
 {% set vat_amount = current_price * vat %}
 {% set additional_costs = fee_with_vat + marginal_with_vat %}
 {% set total_cost = vat_amount + additional_costs %}
