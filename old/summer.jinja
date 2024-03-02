@@ -1,0 +1,33 @@
+#    additional_costs: '
+#{% set sunrise_offset = 10800 %}
+#{% set sunset_offset = 3600 %}
+#{% set now2 = as_timestamp(now()) %}
+#{% set sunset = as_timestamp(state_attr("sun.sun", "next_setting")) %}
+#{% set sunrise = as_timestamp(state_attr("sun.sun", "next_rising")) %}
+#{% set nextday = as_timestamp(states("sensor.date")) + 86400 %}
+
+#{% if nextday < sunset %}
+#  {% set sunset = sunset - 86400 %}
+#{% endif %}
+ 
+#{% if nextday < sunrise %} 
+#  {% set sunrise = sunrise - 86400 %}
+#{% endif %}
+
+#{% set s = { "day": 44.300, "night": 25.200, "sunup": -4.5 } %} 
+#{% if now().weekday() in (5,6) %} 
+#  {% if ((sunrise + sunrise_offset) < now2) and (now2 < (sunset - sunset_offset)) %}
+#    {{s.sunup|float}}
+#  {% else %} 
+#    {{current_price * 0.22 + s.night|float}} 
+#  {% endif %} 
+#{% else %}
+#  {% if ((sunrise + sunrise_offset) < now2) and (now2 < (sunset - sunset_offset)) %}
+#    {{s.sunup|float}}
+#  {% if now().hour >=7 and now().hour < 22 %}
+#    {{current_price * 0.22 + s.day|float}} 
+#  {% else %} 
+#    {{current_price * 0.22 + s.night|float}} 
+#  {% endif %} 
+#{% endif %}
+#'

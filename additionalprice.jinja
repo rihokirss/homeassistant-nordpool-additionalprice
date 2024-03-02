@@ -1,43 +1,64 @@
+# Määrab päikese tõusu ja loojangu offset'id sekundites
+{% set sunrise_offset = 10800 %}  # 3 tundi (10800 sekundit)
+{% set sunset_offset = 3600 %}  # 1 tund (3600 sekundit)
+
+# Võrgutasude sätted €/MWh
+{% set network_fees = {"day": 44.3, "night": 25.2} %}
+
+# Marginaalide sätted €/MWh. Ostumarginaal rakendub elektri ostmisel ja müügimarginaal elektri müümisel
+{% set margins = {"sale": 4.50, "purchase": 2.44} %}  # Täpsustatud: müügimarginaal on 4.50€/MWh, ostumarginaal on 2.44€/MWh
+
+# Käibemaksu määr
+{% set vat = 0.22 %}  # 22%
+
+# Määrab kuud, millal päikeseenergia müük on aktiivne (aprillist oktoobrini)
+{% set solar_energy_sale_months = [4, 10] %}  # Aprillist oktoobrini
+
+# Süsteemi ajaga seotud muutujad
 {% set now_ts = as_timestamp(now()) %}
 {% set sunset_ts = as_timestamp(state_attr("sun.sun", "next_setting")) %}
 {% set sunrise_ts = as_timestamp(state_attr("sun.sun", "next_rising")) %}
 {% set next_day_ts = as_timestamp(states("sensor.date")) + 86400 %}
 {% set current_month = now().month %}
- 
+
+# Korrigeerib päikese loojangu ja tõusu aegu, kui need kuuluvad järgmisse päeva
 {% if next_day_ts < sunset_ts %}
   {% set sunset_ts = sunset_ts - 86400 %}
 {% endif %}
- 
 {% if next_day_ts < sunrise_ts %} 
   {% set sunrise_ts = sunrise_ts - 86400 %}
 {% endif %}
- 
-{% set sunrise_offset = 10800 %}
-{% set sunset_offset = 3600 %}
-{% set network_fees = {"day": 44.3, "night": 25.2} %}
-{% set margins = {"sale": 2.44, "purchase": 4.50} %}
-{% set vat = 0.22 %}
+
+# Nädalavahetuse ja päeva/öö kontroll
 {% set is_weekend = now().weekday() >= 5 %}
 {% set is_daytime = now().hour >= 7 and now().hour < 22 %}
-{% set is_sunup_effective = current_month >= 4 and current_month <= 10 and now_ts > (sunrise_ts + sunrise_offset) and now_ts < (sunset_ts - sunset_offset) %}
+{% set is_solar_energy_sale_period = current_month >= solar_energy_sale_months[0] and current_month <= solar_energy_sale_months[1] %}
+
+# Kontrollib, kas praegu on päikeseenergia müügiperiood ja kas päike on üleval
+{% set is_sunup_effective = is_solar_energy_sale_period and now_ts > (sunrise_ts + sunrise_offset) and now_ts < (sunset_ts - sunset_offset) %}
+
+# Määrab võrgutasu vastavalt kellaajale
 {% set fee = network_fees.night %}
- 
 {% if is_weekend or not is_daytime %}
   {% set fee = network_fees.night %}
 {% else %}
   {% set fee = network_fees.day %}
 {% endif %}
- 
-{% set marginal = margins.sale %}
- 
+
+# Valib õige marginaali vastavalt sellele, kas päike on üleval (müügiperioodil)
+{% set marginal = margins.purchase %}  # Vaikimisi ostumarginaal
 {% if is_sunup_effective %}
-  {% set marginal = margins.purchase %}
+  {% set marginal = margins.sale %}  # Kui päike on üleval, kasutame müügimarginaali
 {% endif %}
- 
+
+# Arvutab võrgutasu ja marginaali koos käibemaksuga
 {% set fee_with_vat = fee * (1 + vat) %}
 {% set marginal_with_vat = marginal * (1 + vat) %}
+
+# Arvutab käibemaksu osa algsest hinnast ja lisab täiendavad kulud
 {% set vat_amount = current_price * vat %}
 {% set additional_costs = fee_with_vat + marginal_with_vat %}
 {% set total_cost = vat_amount + additional_costs %}
- 
+
+# Väljastab kogukulu
 {{ total_cost }}
