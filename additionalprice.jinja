@@ -40,6 +40,7 @@
 {# Määrab võrgutasu. Kui päike on üleval, siis võrgutasu on 0. #}
 {% if is_sunup_effective %}
   {% set fee = 0 %}
+  {% set vat = 0 %}  
 {% else %}
   {% if is_weekend or not is_daytime %}
     {% set fee = network_fees.night %}
