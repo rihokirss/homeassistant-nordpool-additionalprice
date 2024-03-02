@@ -1,0 +1,32 @@
+{# Võrgutasude sätted ainult ostuhinna arvutamiseks. Kui päikeseparki ei arvesta
+Eeldab et nordpooli hind võetakse VAT-ga #}
+{% set network_fees = {"day": 36.9, "night": 21.0} %} {# Võrk 4 km-ta https://elektrilevi.ee/et/vorguleping/vorgupaketid #}
+
+{# Marginaalide sätted €/MWh. Ostumarginaal rakendub elektri ostmisel ja müügimarginaal elektri müümisel #}
+{% set margins = {"sale": -4.50, "purchase": 2.44} %}  {# Täpsustatud: müügimarginaal on 4.50€/MWh, ostumarginaal on 2.44€/MWh #}
+
+{# Käibemaksu määr #}
+{% set vat = 0.22 %}  {# 22% #}
+
+{# Nädalavahetuse ja päeva/öö kontroll #}
+{% set is_weekend = now().weekday() >= 5 %}
+{% set is_daytime = now().hour >= 7 and now().hour < 22 %}
+
+{% if is_weekend or not is_daytime %}
+  {% set fee = network_fees.night %}
+{% else %}
+  {% set fee = network_fees.day %}
+{% endif %}
+
+{% set marginal = margins.purchase %}  {# Vaikimisi ostumarginaal #}
+
+{# Arvutab võrgutasu ja marginaali koos käibemaksuga #}
+{% set fee_with_vat = fee * (1 + vat) %}
+{% set marginal_with_vat = marginal * (1 + vat) %}
+
+{# Arvutab käibemaksu osa algsest hinnast ja lisab täiendavad kulud #}
+{% set additional_costs = fee_with_vat + marginal_with_vat %}
+{% set total_cost = additional_costs %}
+
+{# Väljastab kogukulu #}
+{{ total_cost }}
