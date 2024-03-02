@@ -1,8 +1,8 @@
-# Elektri Lõpphinna Arvutamise Script Home Assistantis
+# Elektri lõpphinna arvutamise script Home Assistantis
 
 See dokument kirjeldab scripti, mis on loodud Home Assistanti keskkonnas kasutamiseks. Script arvutab elektri lõpphinna (koos käibemaksuga), võttes aluseks NordPooli börsihinna ilma käibemaksuta. Skript arvestab lisakuludega nagu võrgutasud ja marginaalid ning lisab käibemaksu, pakkudes täpset ülevaadet elektrikuludest. Eriti oluline on skripti paindlikkus päikeseenergia tootmise perioodidel, kohandades võrgutasusid sõltuvalt päikese kättesaadavusest.
 
-## Olulised Muutujad ja Nende Kirjeldused
+## Olulised muutujad ja nende kirjeldused
 
 - **`sunrise_offset` ja `sunset_offset`**: Sekundid, mis lisatakse päikese tõusu ja looja aegadele, et määrata päikeseenergia tootmise algus ja lõpp.
 - **`network_fees`**: Võrgutasude määrad eurodes MWh kohta, eristades päeva- ja öötariifi.
@@ -21,7 +21,7 @@ See dokument kirjeldab scripti, mis on loodud Home Assistanti keskkonnas kasutam
 ## Eeldused
 
 - Home Assistanti instants peab olema seadistatud ja töötama.
-- Nordpooli integratsioon peab olema seadistatud
+- Nordpooli integratsioon peab olema paigaldatud
 - Kasutaja peab olema tuttav YAML konfiguratsioonifailide redigeerimisega Home Assistantis.
 
 ## Seadistamine
@@ -61,5 +61,9 @@ Pärast configuration.yaml faili uuendamist kontrolli konfiguratsiooni kehtivust
 
 ## Kasutamine
 Pärast integratsiooni edukat seadistamist ja Home Assistanti taaskäivitamist, kuvatakse NordPooli elektrihinna sensorid automaatselt Home Assistanti kasutajaliideses. Saad neid kasutada automaatikate loomiseks, energiakulude jälgimiseks ja optimeerimiseks.
+
+## Lisainfo
+Elektrilevi võrgupakettide hinnad:
+https://elektrilevi.ee/et/vorguleping/vorgupaketid
 
 
