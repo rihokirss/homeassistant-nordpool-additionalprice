@@ -1,10 +1,27 @@
-# NordPool Integratsioon Home Assistantis
+# Elektri Lõpphinna Arvutamise Script Home Assistantis
 
-See README kirjeldab, kuidas seadistada NordPooli elektrihinna integratsiooni Home Assistantis
+See dokument kirjeldab scripti, mis on loodud Home Assistanti keskkonnas kasutamiseks. Script arvutab elektri lõpphinna (koos käibemaksuga), lähtudes NordPooli börsihinnast (ilma käibemaksuta), võrgutasudest, müügi- ja ostumarginaalidest ning käibemaksust. Arvesse on võetud ka päikeseenergia müügiperiood aprillist oktoobrini.
+
+## Olulised Muutujad ja Nende Kirjeldused
+
+- **`sunrise_offset` ja `sunset_offset`**: Sekundid, mis lisatakse päikese tõusu ja looja aegadele, et määrata päikeseenergia tootmise algus ja lõpp.
+- **`network_fees`**: Võrgutasude määrad eurodes MWh kohta, eristades päeva- ja öötariifi.
+- **`margins`**: Müügi- ja ostumarginaalid eurodes MWh kohta. Müügimarginaal rakendub päikeseenergia müügile võrgule, ostumarginaal elektri ostmisel.
+- **`vat`**: Käibemaksu määr.
+- **`solar_energy_sale_months`**: Massiiv, mis määratleb kuud (aprillist oktoobrini), millal päikeseenergia müüki arvestatakse.
+- **`is_weekend`, `is_daytime`, `is_solar_energy_sale_period`**: Loogilised muutujad, mis määravad hetke seisu: nädalavahetus, päeva aeg või päikeseenergia müügiperiood.
+- **`is_sunup_effective`**: Kontrollib, kas päike on üleval ja kas on päikeseenergia müügiperiood, mõjutades marginaalide valikut.
+- **`fee`**: Rakendatav võrgutasu, olenevalt ajast ja päevast.
+- **`marginal`**: Rakendatav marginaal, olenevalt päikeseenergia müügiperioodist.
+- **`fee_with_vat` ja `marginal_with_vat`**: Võrgutasude ja marginaalide väärtused pärast käibemaksu lisamist.
+- **`vat_amount`**: Käibemaksu summa, mis arvutatakse börsihinnast.
+- **`additional_costs`**: Lisakulud, mis sisaldavad võrgutasusid ja marginaale koos käibemaksuga.
+- **`total_cost`**: Elektri lõpphind, mis sisaldab börsihinda, lisakulusid ja käibemaksu.
 
 ## Eeldused
 
 - Home Assistanti instants peab olema seadistatud ja töötama.
+- Nordpooli integratsioon peab olema seadistatud
 - Kasutaja peab olema tuttav YAML konfiguratsioonifailide redigeerimisega Home Assistantis.
 
 ## Seadistamine
