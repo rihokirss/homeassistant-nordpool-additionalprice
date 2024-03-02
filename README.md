@@ -1,6 +1,6 @@
 # Elektri Lõpphinna Arvutamise Script Home Assistantis
 
-See dokument kirjeldab scripti, mis on loodud Home Assistanti keskkonnas kasutamiseks. Script arvutab elektri lõpphinna (koos käibemaksuga), lähtudes NordPooli börsihinnast (ilma käibemaksuta), võrgutasudest, müügi- ja ostumarginaalidest ning käibemaksust. Arvesse on võetud ka päikeseenergia müügiperiood aprillist oktoobrini.
+See dokument kirjeldab scripti, mis on loodud Home Assistanti keskkonnas kasutamiseks. Script arvutab elektri lõpphinna (koos käibemaksuga), võttes aluseks NordPooli börsihinna ilma käibemaksuta. Skript arvestab lisakuludega nagu võrgutasud ja marginaalid ning lisab käibemaksu, pakkudes täpset ülevaadet elektrikuludest. Eriti oluline on skripti paindlikkus päikeseenergia tootmise perioodidel, kohandades võrgutasusid sõltuvalt päikese kättesaadavusest.
 
 ## Olulised Muutujad ja Nende Kirjeldused
 
