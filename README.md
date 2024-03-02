@@ -9,7 +9,7 @@ See README kirjeldab, kuidas seadistada NordPooli elektrihinna integratsiooni Ho
 
 ## Seadistamine
 
-NordPooli integratsiooni lisamiseks Home Assistanti, tuleb järgida alltoodud samme. See võimaldab jälgida elektrihindu ja lisada neile täiendavaid kulusid, arvestades käibemaksu ja võrgutasusid.
+NordPooli integratsiooni lisamiseks Home Assistanti, tuleb järgida alltoodud samme. See võimaldab jälgida elektrihindu ja lisada neile täiendavaid kulusid, arvestades käibemaksu ja võrgutasusid. Script arvestab, et nordpooli integratsioonis pole kasutatud käibemaksu. See lisatakse koos lisatasudega lõpphinnale.
 
 ### 1. Integratsiooni lisamine
 
