@@ -3,10 +3,10 @@
 {% set sunset_offset = 3600 %}  {# 1 tund (3600 sekundit) #}
 
 {# Võrgutasude sätted €/MWh #}
-{% set network_fees = {"day": 44.3, "night": 25.2} %}
+{% set network_fees = {"day": 36.9, "night": 21.0} %} {# Võrk 4 #}
 
 {# Marginaalide sätted €/MWh. Ostumarginaal rakendub elektri ostmisel ja müügimarginaal elektri müümisel #}
-{% set margins = {"sale": 4.50, "purchase": 2.44} %}  {# Täpsustatud: müügimarginaal on 4.50€/MWh, ostumarginaal on 2.44€/MWh #}
+{% set margins = {"sale": -4.50, "purchase": 2.44} %}  {# Täpsustatud: müügimarginaal on 4.50€/MWh, ostumarginaal on 2.44€/MWh #}
 
 {# Käibemaksu määr #}
 {% set vat = 0.22 %}  {# 22% #}
